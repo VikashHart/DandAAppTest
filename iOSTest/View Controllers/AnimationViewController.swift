@@ -52,11 +52,6 @@ class AnimationViewController: UIViewController {
     }
     
     // MARK: - Actions
-    @objc private func backAction(_ sender: Any) {
-        let mainMenuViewController = MenuViewController()
-        self.navigationController?.pushViewController(mainMenuViewController, animated: true)
-    }
-    
     @objc private func didPressFade() {
         switch animationView.logoImageView.alpha {
         case 1:

@@ -50,13 +50,13 @@ class MenuViewController: UIViewController {
     }
     
     private func configureButtons() {
-        self.mainMenuView.chatButton.addTarget(self, action: #selector(PressChatButton), for: .touchUpInside)
+        self.mainMenuView.chatButton.addTarget(self, action: #selector(pressChatButton), for: .touchUpInside)
         self.mainMenuView.loginButton.addTarget(self, action: #selector(didPressLoginButton), for: .touchUpInside)
         self.mainMenuView.animationButton.addTarget(self, action: #selector(didPressAnimationButton), for: .touchUpInside)
     }
     
     // MARK: - Actions
-    @objc private func PressChatButton() {
+    @objc private func pressChatButton() {
         let chatViewController = ChatViewController()
         navigationController?.pushViewController(chatViewController, animated: true)
     }
