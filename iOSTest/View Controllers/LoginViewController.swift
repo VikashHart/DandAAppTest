@@ -88,13 +88,13 @@ class LoginViewController: UIViewController {
         self.present(alert, animated: true)
     }
     
-    private func presentLoginAlert(status: [String], responseTime: TimeInterval) {
-        switch status[0] {
+    private func presentLoginAlert(status: LoginModel, responseTime: TimeInterval) {
+        switch status.code {
         case "Error":
             let alert = UIAlertController(title: """
-                \(status[0])
+                \(status.code)
                 
-                \(status[1])
+                \(status.message)
                 """,
                 message: nil, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
@@ -104,10 +104,10 @@ class LoginViewController: UIViewController {
             self.present(alert, animated: true)
         case "Success":
             let alert = UIAlertController(title: """
-                \(status[0])
+                \(status.code)
                 (\(responseTime) seconds)
                 
-                \(status[1])
+                \(status.message)
                 """, message: nil, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
                 self.navigationController?.popToRootViewController(animated: true)

@@ -9,29 +9,24 @@
 import Foundation
 
 protocol LoginClientRetrievable {
-    func login(with email: String, password: String, completion: @escaping (Result<[String], NetworkError>) -> Void)
+    func login(with email: String, password: String, completion: @escaping (Result<LoginModel, NetworkError>) -> Void)
 }
 class LoginClient: LoginClientRetrievable {
     
-    func login(with email: String, password: String, completion: @escaping (Result<[String], NetworkError>) -> Void) {
+    func login(with email: String, password: String, completion: @escaping (Result<LoginModel, NetworkError>) -> Void) {
         var request = URLRequest(url: EndpointBuilder.buildLoginEndpoint(with: email, password: password))
         request.encodeParameters(parameters: ["email": email, "password": password])
         
         get(request: request) { (result) in
             switch result {
             case .success(let data):
-                do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String:String],
-                        let code = json["code"],
-                        let message = json["message"]
-                    {
-                        print(code)
-                        print(message)
-                        completion(.success([code, message]))
+                    guard let loginStatus = try? JSONDecoder().decode(LoginModel.self, from: data)
+                        else {
+                            completion(.failure(NetworkError.decodingError))
+                            return
                     }
-                } catch {
-                    completion(.failure(NetworkError.decodingError))
-                }
+                    completion(.success(loginStatus))
+
             case .failure(let error):
                 completion(.failure(error))
             }
