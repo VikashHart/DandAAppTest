@@ -63,7 +63,7 @@ class LoginViewController: UIViewController {
         guard loginView.emailTextField.text != "" && loginView.passwordTextField.text != ""
             else { return presentInvalidEntryAlert() }
         
-        guard let email = loginView.emailTextField.text, let password = loginView.passwordTextField.text else { return }
+        guard let email = loginView.emailTextField.text?.replacingOccurrences(of: " ", with: ""), let password = loginView.passwordTextField.text?.replacingOccurrences(of: " ", with: "") else { return }
         
         let startDate = Date()
         client.login(with: email, password: password) { [weak self] result in
@@ -105,7 +105,7 @@ class LoginViewController: UIViewController {
         case "Success":
             let alert = UIAlertController(title: """
                 \(status.code)
-                (\(responseTime) seconds)
+                (\(responseTime.convertToMilliseconds()) ms)
                 
                 \(status.message)
                 """, message: nil, preferredStyle: .alert)
